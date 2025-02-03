@@ -25,5 +25,6 @@ def main():
         # Clean up GPIO settings
         GPIO.cleanup()
 
+
 if __name__ == "__main__":
     main()
