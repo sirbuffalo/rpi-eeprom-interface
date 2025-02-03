@@ -129,6 +129,7 @@ def eeprom_read_byte(address):
     
     return value
 
+
 # --- Main Program ---
 if __name__ == "__main__":
     try:
