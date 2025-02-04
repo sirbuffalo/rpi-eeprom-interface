@@ -1,6 +1,6 @@
 import logging
 
-from gpiozero import DigitalOutputDevice, DigitalInputDevice, LED
+from gpiozero import LED, DigitalOutputDevice #, DigitalInputDevice
 from gpiozero.pins.mock import MockPin, MockFactory
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,8 @@ except ImportError:
 # note: are we going to be closing all these input and output devices each time we switch from reading to writing?
 # maybe better to use lower level pin access, like RPi.GPIO .OUT and .IN configuration?
 data_pins = [DigitalOutputDevice(pin, initial_value=False, pin_factory=factory) for pin in [4, 17, 27, 22, 10, 9, 11, 5]]
-data_input_pins = [DigitalInputDevice(pin, pull_up=None, active_state=True, pin_factory=factory) for pin in [4, 17, 27, 22, 10, 9, 11, 5]]
+# can't do this without closing all data_pin devices first
+# data_input_pins = [DigitalInputDevice(pin, pull_up=None, active_state=True, pin_factory=factory) for pin in [4, 17, 27, 22, 10, 9, 11, 5]]
 
 address_pins = [DigitalOutputDevice(pin, initial_value=False, pin_factory=factory) for pin in [14, 15, 18, 23, 24, 25, 8, 7, 12, 16, 20]]
 
