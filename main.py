@@ -1,12 +1,14 @@
-from gpiozero import DigitalOutputDevice, LED
+import logging
 
 from time import sleep
 
+from pin_setup import address_pins, data_pins, test_led
 
-data_pins = [DigitalOutputDevice(pin) for pin in [4, 17, 27, 22, 10, 9, 11, 5]]
-address_pins = [DigitalOutputDevice(pin) for pin in [14, 15, 18, 23, 24, 25, 8, 7, 12, 16, 20]]
-
-LED_TEST_PIN = 21
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 
 def set_address(address):
@@ -15,6 +17,7 @@ def set_address(address):
             pin.on()
         else:
             pin.off()
+
 
 def set_data(data):
     for pin, value in zip(data_pins, f'{data:08b}'):
@@ -25,9 +28,10 @@ def set_data(data):
 
 
 def main():
-    test_led = LED(21)
+    logger.info("Entering main()")
 
     while True:
+        logger.debug("New blink cycle...")
         test_led.on()
         sleep(1)
         test_led.off()
