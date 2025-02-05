@@ -1,3 +1,5 @@
+import gpio_setup
+
 import RPi.GPIO as GPIO
 import time
 
