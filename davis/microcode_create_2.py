@@ -141,4 +141,5 @@ MICROCODE = {
     HLT | STEP_2: HLT
 }
 
+
 print(Options.expand(MICROCODE))
