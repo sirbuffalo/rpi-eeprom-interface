@@ -11,7 +11,7 @@ class LoggingMockPin(MockPin):
     def _change_state(self, value):
         result = super()._change_state(value)
         if result:
-            logger.debug("LoggingMockPin %s: _change_state(%s) returned True (state changed).", self, value)
+            logger.debug("LoggingMockPin %s: _change_state(%s) returned True (_state changed).", self, value)
         else:
             logger.debug("LoggingMockPin %s: _change_state(%s) returned False (no change).", self, value)
         return result

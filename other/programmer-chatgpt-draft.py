@@ -120,7 +120,7 @@ def eeprom_read_byte(address):
     
     value = read_data()
 
-    # Deactivate the chip (return to idle state)
+    # Deactivate the chip (return to idle _state)
     GPIO.output(CE_PIN, GPIO.HIGH)
     GPIO.output(OE_PIN, GPIO.HIGH)
     
