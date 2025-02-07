@@ -1,6 +1,9 @@
-import RPi.GPIO as GPIO
-from bitstring import BitArray
 from time import sleep
+from bitstring import BitArray
+
+import gpio_setup
+import RPi.GPIO as GPIO
+
 
 def set_address(address: BitArray):
     for pin, val in zip(address_pins, address):

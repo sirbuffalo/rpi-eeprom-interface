@@ -1,5 +1,7 @@
-import RPi.GPIO as GPIO
 import time
+
+import gpio_setup
+import RPi.GPIO as GPIO
 
 
 # Set the GPIO pin number (BCM numbering) to which your LED is connected
