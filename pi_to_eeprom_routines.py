@@ -1,7 +1,7 @@
 import logging
 from time import sleep, perf_counter_ns
 
-import support_testing_off_pi
+import support_testing_off_pi  # noqa: F401
 import RPi.GPIO as GPIO
 
 logger = logging.getLogger(__name__)
