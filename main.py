@@ -1,10 +1,11 @@
 import logging
 
-from pi_to_eeprom_routines import initialize_pins_and_disable_chip, enable_led, disable_led, read, write, cleanup
+from pi_to_eeprom_routines import initialize_pins_and_disable_chip, enable_led, disable_led, read_byte, write_byte, cleanup
 
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    # level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -17,13 +18,31 @@ def main():
         initialize_pins_and_disable_chip()
         enable_led()
 
-        # read()
-        write(0, 0)
+        address_data = [
+            (0x0, 0b01010101),
+            (0x1, 0b00000000),
+            (0x2, 0b10011001),
+            (0x3, 0b11101001),
+        ]
 
-        while True:
-            pass
+        # write address_data 
+        for address, byte_to_write in address_data:
+            logger.info(f'-- writing {byte_to_write:08b} - to address {address:#X}')
+            write_byte(address, byte_to_write)
+
+        # read first 4 bytes
+        for address in range(0x0, 0x4):
+            byte_read = read_byte(address)
+            logger.info(f'read value {byte_read:08b} from address {address:#X}')
+
+        # read first 16 bytes
+        for address in range(0x0, 0x16):
+            byte_read = read_byte(address)
+            logger.info(f'read value {byte_read:08b} from address {address:#X}')
     except KeyboardInterrupt:
         logger.info("Recieved KeyboardInterrupt")
+    except Exception as e:
+        logger.error("ERROR: ", e)
     finally:
         logger.info("Cleaning up...")
         disable_led()
