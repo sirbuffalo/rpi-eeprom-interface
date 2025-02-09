@@ -5,8 +5,8 @@ from pi_to_eeprom_routines import initialize_pins_and_disable_chip, enable_led, 
 
 logging.basicConfig(
     # level=logging.DEBUG,
-    # level=logging.INFO,
-    level=logging.WARNING,
+    level=logging.INFO,
+    # level=logging.WARNING,
     format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ def main():
                 logger.error(f'read value {byte_read:08b} from address {address:#X}, expected {expected_byte:08b}')
 
         # read first 16 bytes
-        for address in range(0x0, 0x16):
+        for address in range(0x0, 0x10):
             byte_read = read_byte(address)
             logger.info(f'read value {byte_read:08b} from address {address:#X}')
     except KeyboardInterrupt:
