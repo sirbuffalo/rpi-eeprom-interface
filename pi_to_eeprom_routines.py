@@ -88,11 +88,7 @@ def set_data(data: int):
     GPIO.output(DATA_PINS, data_pin_values)
 
 def read_data():
-    byte = 0
-    for i, pin in enumerate(DATA_PINS):
-        if GPIO.input(pin):
-            byte |= (1 << i)
-    
+    byte = int(''.join(map(int, GPIO.INPUT(DATA_PINS))), 2)
     assert 0 <= byte < (1 << 8)
     return byte
 
