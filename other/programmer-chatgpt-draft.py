@@ -1,4 +1,4 @@
-import gpio_setup
+import support_testing_off_pi
 
 import RPi.GPIO as GPIO
 import time

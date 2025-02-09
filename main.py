@@ -1,47 +1,34 @@
-from time import sleep
-from bitstring import BitArray
+import logging
 
-import gpio_setup
-import RPi.GPIO as GPIO
+from pi_to_eeprom_routines import initialize_pins_and_disable_chip, enable_led, disable_led, read, write, cleanup
 
 
-def set_address(address: BitArray):
-    for pin, val in zip(address_pins, address):
-        GPIO.output(pin, GPIO.HIGH if val == '1' else GPIO.LOW)
-
-def set_data(data: BitArray):
-    for pin, val in zip(data_pins, data):
-        GPIO.output(pin, GPIO.HIGH if val == '1' else GPIO.LOW)
-
-def write(address: BitArray, data: BitArray):
-    set_address(address)
-    set_data(data)
-    sleep(0.001)
-    GPIO.output(WE_PIN, GPIO.LOW)
-    sleep(0.001)
-    GPIO.output(WE_PIN, GPIO.HIGH)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 
-address_pins: tuple[int] = (4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19)
-data_pins: tuple[int] = (14, 15, 18, 23, 24, 25, 8, 7)
-CE_PIN: int = 16
-OE_PIN: int = 20
-WE_PIN: int = 21
+def main():
+    logger.info("Starting read.py")
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+    try:
+        initialize_pins_and_disable_chip()
+        enable_led()
 
-for pin in address_pins:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
+        # read()
+        write(0, 0)
 
-for pin in data_pins:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
+        while True:
+            pass
+    except KeyboardInterrupt:
+        logger.info("Recieved KeyboardInterrupt")
+    finally:
+        logger.info("Cleaning up...")
+        disable_led()
+        cleanup()
 
-GPIO.setup(CE_PIN, GPIO.OUT)
-GPIO.output(CE_PIN, GPIO.HIGH)
-GPIO.setup(OE_PIN, GPIO.OUT)
-GPIO.output(OE_PIN, GPIO.HIGH)
-GPIO.setup(CE_PIN, GPIO.OUT)
-GPIO.output(CE_PIN, GPIO.LOW)
+
+if __name__ == "__main__":
+    main()

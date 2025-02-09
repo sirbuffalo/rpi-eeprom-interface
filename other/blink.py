@@ -1,11 +1,11 @@
 import time
 
-import gpio_setup
+import support_testing_off_pi
 import RPi.GPIO as GPIO
 
 
 # Set the GPIO pin number (BCM numbering) to which your LED is connected
-LED_PIN = 18
+LED_PIN = 26
 
 
 def main():
