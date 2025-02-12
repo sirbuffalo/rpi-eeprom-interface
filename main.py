@@ -32,20 +32,20 @@ def main():
 
         # write address_data 
         for address, byte_to_write in address_data:
-            logger.info(f'-- writing {byte_to_write:08b} - to address {address:#X}')
+            logger.debug(f'-- writing {byte_to_write:08b} - to address {address:#X}')
             write_byte(address, byte_to_write)
 
         # check proper writes
         for address, expected_byte in address_data:
             byte_read = read_byte(address)
-            logger.info(f'read value {byte_read:08b} from address {address:#X}')
+            logger.debug(f'read value {byte_read:08b} from address {address:#X}')
             if byte_read != expected_byte:
-                logger.error(f'read value {byte_read:08b} from address {address:#X}, expected {expected_byte:08b}')
+                logger.warning(f'read value {byte_read:08b} from address {address:#X}, expected {expected_byte:08b}')
 
-        # read first 16 bytes
-        for address in range(0x0, 0x10):
-            byte_read = read_byte(address)
-            logger.info(f'read value {byte_read:08b} from address {address:#X}')
+        # # read first 16 bytes
+        # for address in range(0x0, 0x10):
+        #     byte_read = read_byte(address)
+        #     logger.info(f'read value {byte_read:08b} from address {address:#X}')
     except KeyboardInterrupt:
         logger.info("Recieved KeyboardInterrupt")
     except Exception as e:

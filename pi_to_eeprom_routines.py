@@ -4,8 +4,8 @@ from time import sleep, perf_counter_ns
 import support_testing_off_pi  # noqa: F401
 import RPi.GPIO as GPIO
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 ADDRESS_PINS: tuple[int] = (4, 17, 27, 22, 10, 9, 11, 5, 14, 15, 24)
 DATA_PINS: tuple[int] = (6, 13, 19, 20, 16, 12, 7, 8)
@@ -37,7 +37,6 @@ def enable_led():
 def disable_led():
     GPIO.output(LED_PIN, GPIO.LOW)
 
-
 def initialize_pins_and_disable_chip():
     GPIO.setmode(GPIO.BCM)
     # GPIO.setwarnings(False)
@@ -57,13 +56,11 @@ def initialize_pins_and_disable_chip():
 def cleanup():
     GPIO.cleanup()
 
-
 def set_gpio_data_pins_to_read(): 
     GPIO.setup(DATA_PINS, GPIO.IN)
 
 def set_gpio_data_pins_to_write():
     GPIO.setup(DATA_PINS, GPIO.OUT)
-
 
 def set_address(address: int):
     assert isinstance(address, int)
@@ -96,7 +93,6 @@ def read_data():
     assert 0 <= byte < (1 << 8)
     return byte
 
-
 def read_byte(address: int):
     GPIO.output(WE_PIN, GPIO.HIGH)
 
@@ -120,7 +116,6 @@ def read_byte(address: int):
     sleep(T_READ__OUTPUT_DISABLE_DELAY)
 
     return byte
-
 
 def write_byte(address: int, data: int):
     # assuming setup code set WE to high
