@@ -18,7 +18,8 @@ class EEPROM:
     ADDRESS_CE_OE_TO_OUTPUT_DELAY = 0.000000150
     OUTPUT_DISABLE_DELAY = 0.000000050
     ADDRESS_TO_WE_PULSE_START_DELAY = 0.000000010
-    WRITE_CYCLE_DELAY = 0.001
+    PULSE_WIDTH = 0.000001
+    WRITE_CYCLE_DELAY = 0.002
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
@@ -101,12 +102,12 @@ class EEPROM:
         sleep(EEPROM.ADDRESS_TO_WE_PULSE_START_DELAY)
 
         GPIO.output(EEPROM.WE_PIN, GPIO.LOW)
-        sleep(0.000001)
+        sleep(EEPROM.PULSE_WIDTH)
         GPIO.output(EEPROM.WE_PIN, GPIO.HIGH)
 
         GPIO.output(EEPROM.CE_PIN, GPIO.HIGH)
 
-        sleep(2*EEPROM.WRITE_CYCLE_DELAY)
+        sleep(EEPROM.WRITE_CYCLE_DELAY)
 
     def read_bytes(self, addresses: Iterable[int]):
         data = {}
