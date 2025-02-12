@@ -33,7 +33,7 @@ def setup():
         GPIO.setup(ctrl_pin, GPIO.OUT)
         GPIO.output(ctrl_pin, GPIO.HIGH)
     
-    # Set up data pins initially as outputs (for write); will reconfigure to input for read
+    # Set up byte pins initially as outputs (for write); will reconfigure to input for read
     for pin in DATA_PINS:
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, GPIO.LOW)
@@ -59,7 +59,7 @@ def set_data_pins_as_input():
 
 def write_data(value):
     """
-    Set the data bus (D0-D7) to the specified 8-bit value.
+    Set the byte bus (D0-D7) to the specified 8-bit value.
     """
     if value < 0 or value > 0xFF:
         raise ValueError("Data must be 8-bit (0-255)")
@@ -68,7 +68,7 @@ def write_data(value):
 
 def read_data():
     """
-    Read an 8-bit value from the data bus (D0-D7) and return it.
+    Read an 8-bit value from the byte bus (D0-D7) and return it.
     """
     value = 0
     for i, pin in enumerate(DATA_PINS):
@@ -79,9 +79,9 @@ def read_data():
 # --- EEPROM Operations ---
 def eeprom_write_byte(address, data):
     """
-    Write an 8-bit data byte to the specified address.
+    Write an 8-bit byte byte to the specified address.
     """
-    # Set address and data
+    # Set address and byte
     set_address(address)
     set_data_pins_as_output()
     write_data(data)
@@ -104,12 +104,12 @@ def eeprom_write_byte(address, data):
 
 def eeprom_read_byte(address):
     """
-    Read an 8-bit data byte from the specified address.
+    Read an 8-bit byte byte from the specified address.
     """
     # Set address
     set_address(address)
     
-    # Prepare data bus for reading
+    # Prepare byte bus for reading
     set_data_pins_as_input()
     
     # Activate the chip for reading:
@@ -126,7 +126,7 @@ def eeprom_read_byte(address):
     GPIO.output(CE_PIN, GPIO.HIGH)
     GPIO.output(OE_PIN, GPIO.HIGH)
     
-    # Optionally, set data pins back to output (depends on your application)
+    # Optionally, set byte pins back to output (depends on your application)
     set_data_pins_as_output()
     
     return value
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         
         # Example: Write the byte 0xAB to address 0x123, then read it back
         test_address = 0x123  # Example address (291 decimal)
-        test_data = 0xAB      # Example data (171 decimal)
+        test_data = 0xAB      # Example byte (171 decimal)
         
         print(f"Writing 0x{test_data:02X} to address 0x{test_address:03X}...")
         eeprom_write_byte(test_address, test_data)

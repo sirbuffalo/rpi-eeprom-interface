@@ -66,19 +66,19 @@ def set_address(address: int):
     assert isinstance(address, int)
     assert 0 <= address < (1 << 11)
 
-    # data = tuple(map(lambda pin_value: GPIO.HIGH if int(pin_value) else GPIO.LOW, f'{address:011b}'))
+    # byte = tuple(map(lambda pin_value: GPIO.HIGH if int(pin_value) else GPIO.LOW, f'{address:011b}'))
     address_pin_values = tuple((GPIO.LOW, GPIO.HIGH)[int(pin_value)] for pin_value in f'{address:011b}')
     logger.debug(f"Setting address pins {ADDRESS_PINS} to {address_pin_values}")
 
     GPIO.output(ADDRESS_PINS, address_pin_values)
 
 def set_data(data: int):
-    # for pin, val in zip(data_pins, f'{data:08b}'):
+    # for pin, val in zip(data_pins, f'{byte:08b}'):
     #     GPIO.output(pin, GPIO.HIGH if val == '1' else GPIO.LOW)
     assert isinstance(data, int)
     assert 0 <= data < (1 << 8)
 
-    # data = tuple(map(lambda pin_value: GPIO.HIGH if int(pin_value) else GPIO.LOW, f'{data:08b}'))
+    # byte = tuple(map(lambda pin_value: GPIO.HIGH if int(pin_value) else GPIO.LOW, f'{byte:08b}'))
     data_pin_values = tuple((GPIO.LOW, GPIO.HIGH)[int(pin_value)] for pin_value in f'{data:08b}')
     logger.debug(f"Setting data pins {DATA_PINS} to {data_pin_values}")
 

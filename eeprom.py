@@ -1,8 +1,11 @@
+import logging
 from time import sleep
+from typing import Iterable
 
 import support_testing_off_pi  # noqa: F401
 import RPi.GPIO as GPIO
 
+logger = logging.getLogger(__name__)
 
 class EEPROM:
     ADDRESS_PINS: tuple[int] = (4, 17, 27, 22, 10, 9, 11, 5, 14, 15, 24)
@@ -77,14 +80,22 @@ class EEPROM:
 
         return byte
 
-    def write_byte(self, address: int, data: int):
+    def check_byte(self, address: int, byte: int) -> bool:
+        read_byte = self.read_byte(address)
+        logger.debug(f'read byte {byte:08b} from address {address:011b}')
+        if read_byte != byte:
+            logger.warning(f'read value {read_byte:08b} from address {address:011b}, expected {byte:08b}')
+            return False
+        return True
+
+    def write_byte(self, address: int, byte: int):
         self.set_address(address)
 
         GPIO.output(EEPROM.OE_PIN, GPIO.HIGH)
         GPIO.output(EEPROM.CE_PIN, GPIO.LOW)
 
         self.set_gpio_data_pins_to_write()
-        self.set_data(data)
+        self.set_data(byte)
 
         sleep(EEPROM.ADDRESS_TO_WE_PULSE_START_DELAY)
 
@@ -94,6 +105,16 @@ class EEPROM:
         GPIO.output(EEPROM.CE_PIN, GPIO.HIGH)
 
         sleep(EEPROM.WRITE_CYCLE_DELAY)
+
+    def read_bytes(self, addresses: Iterable[int]):
+        data = {}
+        for address in addresses:
+            data[address] = self.read_byte(address)
+        return data
+
+    def check_bytes(self, data: dict[int, int]):
+        for address, byte in data.items():
+            self.check_byte(address, byte)
 
     def write_bytes(self, data: dict[int, int]):
         for address, byte in data.items():
