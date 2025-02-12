@@ -25,8 +25,8 @@ def main():
     logger.info(f'Writing {len(address_data)} bytes...')
 
     with EEPROM() as eeprom:
-        # eeprom.write_bytes(address_data)
-        # eeprom.check_bytes(address_data)
+        eeprom.write_bytes(address_data)
+        eeprom.check_bytes(address_data)
         print('\n'.join([f'{address:011b}: {byte:08b}' for address, byte in eeprom.read_bytes(range(0x20)).items()]))
 
     logger.info(f'Write complete.')

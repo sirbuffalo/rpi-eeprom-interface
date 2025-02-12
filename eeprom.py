@@ -97,9 +97,11 @@ class EEPROM:
         self.set_gpio_data_pins_to_write()
         self.set_data(byte)
 
+        logger.debug(f'write_byte: preparing to write {byte:08b} to address {address:011b}')
         sleep(EEPROM.ADDRESS_TO_WE_PULSE_START_DELAY)
 
         GPIO.output(EEPROM.WE_PIN, GPIO.LOW)
+        sleep(0.000001)
         GPIO.output(EEPROM.WE_PIN, GPIO.HIGH)
 
         GPIO.output(EEPROM.CE_PIN, GPIO.HIGH)

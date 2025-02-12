@@ -35,6 +35,9 @@ data = {}
 for x in range(2 ** 5):
     data[x] = get_value(x)
 
+print('\n'.join([f'{address:011b}: {byte:08b}' for address, byte in data.items()]))
+
+
 with EEPROM() as eeprom:
     eeprom.write_bytes(data)
     eeprom.check_bytes(data)
