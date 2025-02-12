@@ -80,11 +80,11 @@ class EEPROM:
 
         return byte
 
-    def check_byte(self, address: int, byte: int) -> bool:
+    def check_byte(self, address: int, expected_byte: int) -> bool:
         read_byte = self.read_byte(address)
-        logger.debug(f'read byte {byte:08b} from address {address:011b}')
-        if read_byte != byte:
-            logger.warning(f'read value {read_byte:08b} from address {address:011b}, expected {byte:08b}')
+        logger.debug(f'read byte {expected_byte:08b} from address {address:011b}')
+        if read_byte != expected_byte:
+            logger.warning(f'read value {read_byte:08b} from address {address:011b}, expected {expected_byte:08b}')
             return False
         return True
 
@@ -112,9 +112,12 @@ class EEPROM:
             data[address] = self.read_byte(address)
         return data
 
-    def check_bytes(self, data: dict[int, int]):
-        for address, byte in data.items():
-            self.check_byte(address, byte)
+    def check_bytes(self, expected_data: dict[int, int]):
+        all_valid = True
+        for address, expected_byte in expected_data.items():
+            if not self.check_byte(address, expected_byte):
+                all_valid = False
+        return all_valid
 
     def write_bytes(self, data: dict[int, int]):
         for address, byte in data.items():

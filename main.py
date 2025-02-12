@@ -26,6 +26,7 @@ def main():
     with EEPROM() as eeprom:
         eeprom.write_bytes(address_data)
         eeprom.check_bytes(address_data)
+        # eeprom.read_bytes()
 
     logger.info(f'Write complete.')
 

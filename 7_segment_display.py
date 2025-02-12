@@ -30,3 +30,4 @@ for x in range(2 ** 11):
 
 with EEPROM() as eeprom:
     eeprom.write_bytes(data)
+    eeprom.check_bytes(data)
