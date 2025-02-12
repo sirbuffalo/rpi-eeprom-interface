@@ -82,9 +82,9 @@ class EEPROM:
 
     def check_byte(self, address: int, expected_byte: int) -> bool:
         read_byte = self.read_byte(address)
-        logger.debug(f'read byte {expected_byte:08b} from address {address:011b}')
+        logger.debug(f'read byte {read_byte:08b} from address {address:011b}')
         if read_byte != expected_byte:
-            logger.warning(f'read value {read_byte:08b} from address {address:011b}, expected {expected_byte:08b}')
+            logger.warning(f'read byte {read_byte:08b} from address {address:011b}, expected {expected_byte:08b}')
             return False
         return True
 

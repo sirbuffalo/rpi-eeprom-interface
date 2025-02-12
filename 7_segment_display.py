@@ -32,7 +32,7 @@ def get_value(address):
 
 
 data = {}
-for x in range(2 ** 11):
+for x in range(2 ** 5):
     data[x] = get_value(x)
 
 with EEPROM() as eeprom:
