@@ -1,4 +1,11 @@
 from eeprom import EEPROM
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 seven_segment_display = {
     ' ': 0b00000000,

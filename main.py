@@ -1,10 +1,11 @@
 import logging
 
 from eeprom import EEPROM
+from json import dumps
 
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -24,9 +25,9 @@ def main():
     logger.info(f'Writing {len(address_data)} bytes...')
 
     with EEPROM() as eeprom:
-        eeprom.write_bytes(address_data)
-        eeprom.check_bytes(address_data)
-        # eeprom.read_bytes()
+        # eeprom.write_bytes(address_data)
+        # eeprom.check_bytes(address_data)
+        print(dumps(eeprom.read_bytes(range(0x20)), indent=4))
 
     logger.info(f'Write complete.')
 
