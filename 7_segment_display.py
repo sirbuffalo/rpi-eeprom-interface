@@ -2,7 +2,7 @@ from eeprom import EEPROM
 import logging
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
 )
 logger = logging.getLogger(__name__)
@@ -32,11 +32,10 @@ def get_value(address):
 
 
 data = {}
-for x in range(2 ** 5):
+for x in range(2 ** 11):
     data[x] = get_value(x)
 
-print('\n'.join([f'{address:011b}: {byte:08b}' for address, byte in data.items()]))
-
+logger.debug('\n'.join([f'{address:011b}: {byte:08b}' for address, byte in data.items()]))
 
 with EEPROM() as eeprom:
     eeprom.write_bytes(data)
