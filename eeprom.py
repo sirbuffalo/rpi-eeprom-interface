@@ -106,7 +106,7 @@ class EEPROM:
 
         GPIO.output(EEPROM.CE_PIN, GPIO.HIGH)
 
-        sleep(EEPROM.WRITE_CYCLE_DELAY)
+        sleep(2*EEPROM.WRITE_CYCLE_DELAY)
 
     def read_bytes(self, addresses: Iterable[int]):
         data = {}
