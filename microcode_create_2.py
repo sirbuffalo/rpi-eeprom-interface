@@ -47,6 +47,7 @@ class Options:
     def __rand__(self, other):
         return self.__and__(other)
 
+
     def __xor__(self, other):
         if isinstance(other, int):
             return Options(*[bit_array ^ other for bit_array in self._bit_arrays])
@@ -98,48 +99,57 @@ STEP_7 = 0b111 << 4
 
 ALL_STEPS = Options(STEP_0, STEP_1, STEP_2, STEP_3, STEP_4, STEP_5, STEP_6, STEP_7)
 
-HLT = 1 << 15
-MI = 1 << 14
-RI = 1 << 13
-RO = 1 << 12
-IO = 1 << 11
-II = 1 << 10
-AI = 1 << 9
-AO = 1 << 8
-EO = 1 << 7
-SU = 1 << 6
-BI = 1 << 5
-OI = 1 << 4
-CE = 1 << 3
-CO = 1 << 2
-J = 1 << 1
+HT = 1 << 15  # Halt
+MI = 1 << 14  # Memory Address Register In
+RI = 1 << 13  # RAM In
+RO = 1 << 12  # RAM Out
+IO = 1 << 11  # Instruction Register Out
+II = 1 << 10  # Instruction Register In
+AI = 1 << 9   # A Register In
+AO = 1 << 8   # A Register Out
+EO = 1 << 7   # Sum Out
+SU = 1 << 6   # Subtract
+BI = 1 << 5   # B Register In
+OI = 1 << 4   # Output Register In
+CE = 1 << 3   # Counter Enable
+CO = 1 << 2   # Counter Out
+J = 1 << 1    # Jump
 
-NOP = 0b0000 << 7
-LDA = 0b0001 << 7
-ADD = 0b0010 << 7
-SUB = 0b0011 << 7
-STA = 0b0100 << 7
-LDI = 0b0101 << 7
-JMP = 0b0110 << 7
+NOP = 0b0000 << 7  # No Operation
+LDA = 0b0001 << 7  # Load A
+STA = 0b0010 << 7  # Store A
+ADD = 0b0011 << 7  #
+SUB = 0b0100 << 7
+JMP = 0b0101 << 7
+LIA = 0b0110 << 7
+LIB = 0b0111 << 7
 OUT = 0b1110 << 7
 HLT = 0b1111 << 7
 
-ALL_INSTRUCTIONS = Options(NOP, LDA, ADD, SUB, STA, LDI, JMP, OUT, HLT)
+ALL_INSTRUCTIONS = Options(NOP, LDA, STA, ADD, SUB, JMP, LIA, OUT, HLT)
+# 
+# NO_FLAGS = 0b0000
+# CARRY_FLAG = 0b0001
+# ANY_CARRY_FLAG = Options(NO_FLAGS, CARRY_FLAG)
+# ZERO_FLAG = 0b0010
+# ANY_ZERO_FLAG = Options(NO_FLAGS, ZERO_FLAG)
+# ANY_FLAGS = ANY_CARRY_FLAG | ANY_ZERO_FLAG
 
 MICROCODE = {
     ALL_INSTRUCTIONS | STEP_0: MI | CO,
     ALL_INSTRUCTIONS | STEP_1: RO | II | CE,
-    Options(LDA, ADD, SUB, STA) | STEP_2: MI | IO,
-    Options(ADD, SUB) | STEP_3: MI | RO,
-    LDA | STEP_3: RO | IO,
+    Options(LDA, STA, ADD, SUB) | STEP_2: IO | MI,
+    LDA | STEP_3: RO | AI,
+    STA | STEP_3: AO | RI,
+    Options(ADD, SUB) | STEP_3: RO | BI,
     ADD | STEP_4: AI | EO,
-    SUB | STEP_4: AO | EO | SU,
-    STA | STEP_4: RI | AO,
-    LDI | STEP_2: IO | AI,
+    SUB | STEP_4: AI | EO | SU,
     JMP | STEP_2: IO | J,
+    LIA | STEP_2: IO | AI,
+    LIB | STEP_2: IO | BI,
     OUT | STEP_2: AO | OI,
-    HLT | STEP_2: HLT
-}
+    HLT | STEP_2: HT,
 
+}
 
 print(Options.expand(MICROCODE))

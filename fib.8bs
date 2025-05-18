@@ -1,0 +1,5 @@
+LIB 1
+ADD
+OUT
+SWP
+JMP 1
