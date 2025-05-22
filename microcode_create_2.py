@@ -160,6 +160,7 @@ MICROCODE = {
 
 print(Options.expand(MICROCODE))
 
+
 #data = Options.expand(MICROCODE)
 #first_data = {key: value & 0xFF for key, value in data.items()}
 #with EEPROM() as eeprom:
