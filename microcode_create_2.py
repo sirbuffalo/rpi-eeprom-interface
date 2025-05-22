@@ -1,5 +1,12 @@
 from __future__ import annotations
+from eeprom import EEPROM
+import logging
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 class Options:
     def __init__(self, *args):
@@ -141,5 +148,8 @@ MICROCODE = {
     HLT | STEP_2: HLT
 }
 
-
-print(Options.expand(MICROCODE))
+data = Options.expand(MICROCODE)
+first_data = {key: value & 0xFF for key, value in data.items()}
+with EEPROM() as eeprom:
+    eeprom.write_bytes(first_data)
+    eeprom.check_bytes(first_data)
