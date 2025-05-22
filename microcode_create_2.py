@@ -1,5 +1,12 @@
 from __future__ import annotations
+from eeprom import EEPROM
+import logging
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(name)s [%(levelname)s] %(filename)s:%(lineno)d: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 class Options:
     def __init__(self, *args):
@@ -46,7 +53,6 @@ class Options:
 
     def __rand__(self, other):
         return self.__and__(other)
-
 
     def __xor__(self, other):
         if isinstance(other, int):
@@ -127,7 +133,7 @@ OUT = 0b1110 << 7
 HLT = 0b1111 << 7
 
 ALL_INSTRUCTIONS = Options(NOP, LDA, STA, ADD, SUB, JMP, LIA, OUT, HLT)
-# 
+#
 # NO_FLAGS = 0b0000
 # CARRY_FLAG = 0b0001
 # ANY_CARRY_FLAG = Options(NO_FLAGS, CARRY_FLAG)
@@ -153,3 +159,9 @@ MICROCODE = {
 }
 
 print(Options.expand(MICROCODE))
+
+#data = Options.expand(MICROCODE)
+#first_data = {key: value & 0xFF for key, value in data.items()}
+#with EEPROM() as eeprom:
+#    eeprom.write_bytes(first_data)
+#    eeprom.check_bytes(first_data)
